@@ -1,0 +1,21 @@
+{
+    "name": "juneapp/php-sdk",
+    "description": "JUNE PHP SDK",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "6.3.3",
+        "lcobucci/jwt": "3.2.0"
+    },
+    "authors": [
+        {
+            "name": "JUNE - Online Marketing",
+            "email": "info@juneapp.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "JuneSdk": "src/"
+        }
+    }
+}
