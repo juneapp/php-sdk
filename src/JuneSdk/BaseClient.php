@@ -38,11 +38,6 @@ class BaseClient {
         }
 
         $client = new GuzzleClient();
-        try {
-            return json_decode($client->request($type, $this->apiUrl.$path, $options)->getBody()->getContents(), true);
-        }
-        catch(\Exception $e) {
-            return null;
-        }
+        return json_decode($client->request($type, $this->apiUrl.$path, $options)->getBody()->getContents(), true);
     }
 }
