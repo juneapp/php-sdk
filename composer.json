@@ -4,7 +4,8 @@
     "type": "library",
     "require": {
         "guzzlehttp/guzzle": "6.3.3",
-        "lcobucci/jwt": "3.2.0"
+        "lcobucci/jwt": "3.2.0",
+        "ext-json": "*"
     },
     "authors": [
         {
