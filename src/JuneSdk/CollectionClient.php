@@ -42,4 +42,62 @@ class CollectionClient extends BaseClient
         $this->put('collect/'.$collectionToken.'/'.$collectionId, $data);
     }
 
+    /**
+     * Needs to be an Array of json object(s). [{"fieldName" : "data"}]
+     * Use the Log Token to view the status of your data with.
+     * @param string $collectionToken
+     * @param array $import
+     * @param bool|null $activateTrigger
+     * @param bool $erasePreviousData
+     * @return string
+     */
+    public function importJson(string $collectionToken, array $import, bool $activateTrigger = false, $erasePreviousData = false) : string {
+
+        if($erasePreviousData == true){
+            $this->deleteListContent($collectionToken);
+        }
+
+        $data["json"] = $import;
+
+        $logToken = $this->post('collect/'.$collectionToken.'/import/json', $data);
+
+        return $logToken;
+    }
+
+    /**
+     * The CSV needs to be formatted as a string. Newline needs to be formatted as \r\n
+     * @param string $collectionToken
+     * @param string $csvString
+     * @param string $delimiter
+     * @param bool $erasePreviousData
+     * @param bool|null $activateTrigger
+     */
+    public function importCsv($collectionToken, $csvString, $delimiter = ",", $activateTrigger = false , $erasePreviousData = false) {
+
+        $data["activate_trigger"] = $activateTrigger;
+        $data["delimiter"] = $delimiter;
+        $data["csv"] = $csvString;
+
+        $logToken = $this->post('collect/'.$collectionToken.'import/csv', $data);
+    }
+
+    /**
+     * Deletes the whole list content.
+     * @param string $collectionToken
+     */
+    public function deleteListContent($collectionToken) {
+
+        $this->delete('collection/list/'.$collectionToken);
+    }
+
+    /**
+     * Returns Log Token as array of objects.
+     * @param string $logToken
+     * @return mixed
+     */
+    public function viewImportStatus($logToken){
+
+        return $this->get("collection/".$logToken);
+    }
+
 }
