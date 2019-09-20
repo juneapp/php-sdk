@@ -19,75 +19,94 @@ class CollectionClient extends BaseClient
     /**
      * @param string $collectionToken
      * @param mixed $data
-     */
-    public function createItem($collectionToken, $data) {
-        $this->post('collect/'.$collectionToken, $data);
-    }
-
-    /**
-     * @param string $collectionToken
-     * @param string $collectionId
      * @return mixed
      */
-    public function getItem($collectionToken, $collectionId) {
-        return $this->get('collect/'.$collectionToken.'/'.$collectionId);
+    public function createItem($collectionToken, $data) {
+        return $this->post('collect/'.$collectionToken, $data);
     }
 
     /**
      * @param string $collectionToken
-     * @param string $collectionId
-     * @param mixed $data
+     * @param string $collectId
+     * @return mixed
      */
-    public function updateItem($collectionToken, $collectionId, $data) {
-        $this->put('collect/'.$collectionToken.'/'.$collectionId, $data);
+    public function getItem($collectionToken, $collectId) {
+        return $this->get('collect/'.$collectionToken.'/'.$collectId);
+    }
+
+    /**
+     * @param string $collectionToken
+     * @param string $collectId
+     * @param mixed $data
+     * @return mixed
+     */
+    public function updateItem($collectionToken, $collectId, $data) {
+        return $this->put('collect/'.$collectionToken.'/'.$collectId, $data);
+    }
+
+    /**
+     * @param string $collectionToken
+     * @param string $collectId
+     * @return mixed
+     */
+    public function deleteItem($collectionToken, $collectId) {
+        return $this->delete('collect/'.$collectionToken.'/'.$collectId);
     }
 
     /**
      * Needs to be an Array of json object(s). [{"fieldName" : "data"}]
      * Use the Log Token to view the status of your data with.
      * @param string $collectionToken
-     * @param array $import
-     * @param bool|null $activateTrigger
+     * @param array $data
      * @param bool $erasePreviousData
-     * @return string
+     * @return array
      */
-    public function importJson(string $collectionToken, array $import, bool $activateTrigger = false, $erasePreviousData = false) : string {
+    public function import(string $collectionToken, array $data, $erasePreviousData = false) : array {
 
         if($erasePreviousData == true){
-            $this->deleteListContent($collectionToken);
+            $this->eraseCollection($collectionToken);
         }
 
-        $data["json"] = $import;
-
-        $logToken = $this->post('collect/'.$collectionToken.'/import/json', $data);
-
-        return $logToken;
+        return $this->post('collect/'.$collectionToken.'/import/json', ['json' => $data]);
     }
 
     /**
      * The CSV needs to be formatted as a string. Newline needs to be formatted as \r\n
      * @param string $collectionToken
      * @param string $csvString
-     * @param string $delimiter
      * @param bool $erasePreviousData
-     * @param bool|null $activateTrigger
+     * @return array
      */
-    public function importCsv($collectionToken, $csvString, $delimiter = ",", $activateTrigger = false , $erasePreviousData = false) {
+    public function importCsv($collectionToken,string $csvString, $erasePreviousData = false) : array {
 
-        $data["activate_trigger"] = $activateTrigger;
-        $data["delimiter"] = $delimiter;
-        $data["csv"] = $csvString;
+        if($erasePreviousData == true){
+            $this->eraseCollection($collectionToken);
+        }
 
-        $logToken = $this->post('collect/'.$collectionToken.'import/csv', $data);
+        return $this->post('collect/'.$collectionToken.'/import/csv', ['csv' => $csvString]);
     }
 
     /**
-     * Deletes the whole list content.
-     * @param string $collectionToken
+     * Get the list Collection for the specified list id.
+     * $skip defines where the list starts
+     * $limit defines the limit of how many items it returns (0 = all)
+     * @param string $listKey
+     * @param int $skip
+     * @param int $limit
+     * @return mixed
      */
-    public function deleteListContent($collectionToken) {
+    public function getCollection(string $listKey, int $skip, int $limit) {
+        return $this->get('collection/list/'.$listKey."/".$skip."/".$limit);
+    }
 
-        $this->delete('collection/list/'.$collectionToken);
+
+    /**
+     * Deletes the whole list content.
+     * @param string $listKey
+     */
+    public function eraseCollection($listKey) : void {
+
+        $this->delete('collection/list/'.$listKey);
     }
 
     /**
@@ -95,7 +114,7 @@ class CollectionClient extends BaseClient
      * @param string $logToken
      * @return mixed
      */
-    public function viewImportStatus($logToken){
+    public function getImportLog($logToken) {
 
         return $this->get("collection/".$logToken);
     }
