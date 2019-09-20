@@ -74,4 +74,22 @@ class ListClient extends BaseClient {
         return $this->post('/lists', $list);
     }
 
+    /**
+     * $interfaceType can be: email, push_notification
+     * $listItems same as in createList(), but required
+     * @param string $listName
+     * @param string $interfaceType
+     * @param array|null $listItems
+     * @return mixed
+     */
+    public function createListWithInterface(string $listName, string $interfaceType, array $listItems) {
+        $list["list_name"] = $listName;
+
+        if ($listItems){
+            $list["list_items"] = $listItems;
+        }
+
+        return $this->post('/lists/'.$interfaceType, $list);
+    }
+
 }

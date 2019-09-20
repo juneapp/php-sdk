@@ -1,10 +1,10 @@
 # juneapp/php-sdk
 
-A basic SDK to interact with the June automation.
+A basic SDK to interact with the JUNE automation.
 
 ## Description
 
-The June PHP SDK is a small collection of tools to create an easier way to interact with the June automation service.
+The JUNE PHP SDK is a small collection of tools to create an easier way to interact with the JUNE automation service.
 
 It contains several prebuilt functions which can be used as a foundation to connect to automation lists. 
 
