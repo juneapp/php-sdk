@@ -71,7 +71,7 @@ class ListClient extends BaseClient {
             $list["list_items"] = $listItems;
         }
 
-        return $this->post('/lists', $list);
+        return $this->post('lists/', $list);
     }
 
     /**
@@ -89,7 +89,7 @@ class ListClient extends BaseClient {
             $list["list_items"] = $listItems;
         }
 
-        return $this->post('/lists/'.$interfaceType, $list);
+        return $this->post('lists/interfaces'.$interfaceType, $list);
     }
 
 }
