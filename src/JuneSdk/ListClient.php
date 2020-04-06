@@ -92,27 +92,4 @@ class ListClient extends BaseClient {
         return $this->post('lists/interfaces'.$interfaceType, $list);
     }
 
-    /**
-     * $skip defines the amount of results to skip
-     * $limit defines the limit of results returned
-     * $segmentationFilterId is the id of a possible segmentation filter which was created in the editor
-     * $filter needs to be a mongoDB object
-     * @param string $listKey
-     * @param string $skip
-     * @param string $limit
-     * @param string|null $segmentationFilterId
-     * @param mixed|null $filter
-     * @return \Exception|mixed
-     */
-    public function filterList(string $listKey, string $skip, string $limit, $segmentationFilterId = null, $filter = null) {
-
-        $filterOptions['skip'] = $skip;
-        $filterOptions['limit'] = $limit;
-        $filterOptions['segmentation_filter_id'] = $segmentationFilterId;
-        $filterOptions['filter'] = $filter;
-        $filterOptions['sorting'] = '{"_id":-1}}';
-
-        return $this->post('collection/list/'.$listKey.'/filter', $filterOptions);
-    }
-
 }
