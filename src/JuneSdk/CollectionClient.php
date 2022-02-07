@@ -137,7 +137,7 @@ class CollectionClient extends BaseClient
         $filterOptions['limit'] = $limit;
         $filterOptions['segmentation_filter_id'] = $segmentationFilterId;
         $filterOptions['filter'] = $filter;
-        $filterOptions['sorting'] = '{"_id":-1}}';
+        $filterOptions['sorting'] = ["_id" => -1];
 
         return $this->post('collection/list/'.$listKey.'/filter', $filterOptions);
     }
